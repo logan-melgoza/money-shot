@@ -1,0 +1,54 @@
+.navbar {
+  background-color: #526D82;  /* Dark background */
+  color: white;
+  display: flex;
+  align-items: center;  /* Align items (logo, date, text) */
+  justify-content: space-between;  /* Space sections evenly */
+  padding: 10px 20px;  /* Add padding */
+  position: fixed;  /* Fixes navbar at the top */
+  top: 0;
+  left: 0;
+  width: 100%;  /* Full width */
+  z-index: 1000;
+}
+
+.navbar__section {
+  flex: 1;  /* Each section takes equal space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar__left {
+  justify-content: flex-start;  /* Align logo to the left */
+}
+
+.navbar__right {
+  justify-content: flex-end;  /* Align text to the center */
+  padding-right: 20px;
+  margin-right: 20px; /* Space from the right edge */
+}
+
+.navbar__logo {
+  height: 50px; /* Adjust logo size */
+  width: auto;
+  margin-right: 10px; /* Space between logo and date */
+}
+
+.navbar__center {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Make Navbar Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack sections on smaller screens */
+    text-align: center;
+  }
+
+  .navbar__section {
+    padding: 5px 0;
+  }
+}
