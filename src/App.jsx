@@ -1,6 +1,6 @@
-import Title from './Title';
+import Navbar from './Navbar';
 
 function App() {
-  return <div><Title></Title></div>;
+  return <div><Navbar></Navbar></div>;
 }
 export default App;
