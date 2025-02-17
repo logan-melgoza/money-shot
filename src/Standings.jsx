@@ -7,7 +7,22 @@ function Standings () {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchStandings();
+    //Check localStorage for cached data
+    const cachedData = localStorage.getItem('standingsData');
+    const cachedTimestamp = localStorage.getItem('standingsTimestamp');
+    const now = Date.now();
+
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+    if (cachedData && cachedTimestamp && (now - Number(cachedTimestamp)) < oneDay) {
+      // Use cached data
+      const parsed = JSON.parse(cachedData);
+      setEasternStandings(parsed.east);
+      setWesternStandings(parsed.west);
+    } else {
+      // Fetch new data if cache is missing or expired
+      fetchStandings();
+    }    
   }, []);
 
   const fetchStandings = async () => {
@@ -47,7 +62,7 @@ function Standings () {
       <div className='standings-container'>
         <div className='conference eastern'>
           <h3>Eastern Conference</h3>
-          <ul>
+          <ul className='standings__list'>
             {easternStandings.map((item) => (
               <li key={item.team.id}>
                 {item.conference.rank}. <img className= "standings__logo" src={item.team.logo} alt={item.team.nickname}/> {item.team.nickname} - {item.conference.win}W {item.conference.loss}L
@@ -57,7 +72,7 @@ function Standings () {
         </div>
         <div className='conference western'>
           <h3>Western Conference</h3>
-          <ul>
+          <ul className='standings__list'>
             {westernStandings.map((item) => (
               <li key={item.team.id}>
                 {item.conference.rank}. <img className= "standings__logo" src={item.team.logo} alt={item.team.nickname}/> {item.team.nickname} - {item.conference.win}W {item.conference.loss}L
