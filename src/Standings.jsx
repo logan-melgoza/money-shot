@@ -19,6 +19,7 @@ function Standings () {
       const parsed = JSON.parse(cachedData);
       setEasternStandings(parsed.east);
       setWesternStandings(parsed.west);
+      console.log("Using cached standings data");
     } else {
       // Fetch new data if cache is missing or expired
       fetchStandings();
@@ -43,11 +44,19 @@ function Standings () {
       const textResult = await response.text();
       const data = JSON.parse(textResult);
       
-      const east = data.response.filter(item => item.conference.name.toLowerCase() === 'east');
-      const west = data.response.filter(item => item.conference.name.toLowerCase() === 'west');
-      
-      setEasternStandings(east.sort((a, b) => a.conference.rank - b.conference.rank));
-      setWesternStandings(west.sort((a, b) => a.conference.rank - b.conference.rank));
+      let east = data.response.filter(item => item.conference.name.toLowerCase() === 'east');
+      let west = data.response.filter(item => item.conference.name.toLowerCase() === 'west');
+
+      east = [...east].sort((a, b) => a.conference.rank - b.conference.rank);
+      west = [...west].sort((a, b) => a.conference.rank - b.conference.rank);
+
+      setEasternStandings(east);
+      setWesternStandings(west);
+
+      // Cache the data
+      const standingsData = { east, west };
+      localStorage.setItem('standingsData', JSON.stringify(standingsData));
+      localStorage.setItem('standingsTimestamp', Date.now().toString());
 
     } catch (error) {
       setError(error.message);
