@@ -7,7 +7,7 @@ function Navbar() {
 
   useEffect(() => {
     const date = new Date().toLocaleDateString("en-US", {
-      weekdate: "long",
+      weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric"
@@ -20,7 +20,7 @@ function Navbar() {
       {/* Left Section - Logo */}
       <div className="navbar__section navbar__left">
         <img src={logo} alt="Logo" className="navbar__logo" />
-        <span class name="navbar__title">Money Shot</span>
+        <span className="navbar__title">Money Shot</span>
       </div>
 
       {/* Center Section - Current Date */}

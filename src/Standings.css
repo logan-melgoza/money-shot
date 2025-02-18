@@ -1,0 +1,46 @@
+.standings__logo {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+/* Standings.css */
+.Standings {
+  /* Center the entire block on the page */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  border: 1px solid red;  
+  /* This will center text like the <h2> as well */
+  text-align: center;
+}
+
+.standings-container {
+  /* Put the two conferences side by side */
+  display: flex;
+  justify-content: center;  /* center the columns themselves */
+  gap: 2rem;                /* space between the two columns */
+  flex-wrap: wrap;          /* optional: stack on small screens */
+  width: 100%;              /* or a max-width if you prefer */
+  border: 1px solid red;  
+}
+
+.conference {
+  /* Each conference column can have its own styling */
+  margin: 0;
+  padding: 0;
+  border: 1px solid red;  
+}
+
+.conference ul {
+  list-style-type: none;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid red;  
+}
