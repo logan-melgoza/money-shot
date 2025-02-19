@@ -40,3 +40,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.main-container {
+  display: flex;          /* ✅ Arrange children (Standings & Matchups) side by side */
+  justify-content: space-between;  /* ✅ Add space between them */
+  align-items: flex-start; /* ✅ Align items to the top */
+  gap: 20px; /* ✅ Add some spacing between elements */
+  padding: 20px;
+  margin-top: 70px;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;  /* ✅ Stack vertically on small screens */
+  }
+}

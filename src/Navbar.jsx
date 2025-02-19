@@ -30,7 +30,7 @@ function Navbar() {
 
       {/* Right Section - Custom Text */}
       <div className="navbar__section navbar__right">
-        <span>Live Sports Insights</span>
+        <span>AI Sports Insights</span>
       </div>
     </div>
   );
