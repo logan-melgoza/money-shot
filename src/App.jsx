@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "./Navbar"; 
 import Standings from "./Standings";
+import Matchups from "./Matchups";
+import "./App.css"
 
 function App() {
   return (
@@ -8,6 +10,7 @@ function App() {
       <Navbar />  {/* ✅ Use Navbar in your app */}
       <main>
         <Standings />
+        <Matchups />
       </main>
     </div>
   );
