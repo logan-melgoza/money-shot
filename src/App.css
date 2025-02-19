@@ -47,6 +47,7 @@
   align-items: flex-start; /* ✅ Align items to the top */
   gap: 20px; /* ✅ Add some spacing between elements */
   padding: 20px;
+  margin-top: 70px;
 }
 
 @media (max-width: 768px) {

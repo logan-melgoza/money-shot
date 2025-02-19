@@ -1,54 +1,85 @@
+/* Navbar Container */
 .navbar {
-  background-color: #526D82;  /* Dark background */
+  background-color: #1e1e1e;
   color: white;
   display: flex;
-  align-items: center;  /* Align items (logo, date, text) */
-  justify-content: space-between;  /* Space sections evenly */
-  padding: 10px 20px;  /* Add padding */
-  position: fixed;  /* Fixes navbar at the top */
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;  /* Full width */
+  width: 100%;
+  height: 70px;
   z-index: 1000;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
+/* Navbar Sections */
 .navbar__section {
-  flex: 1;  /* Each section takes equal space */
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex: 1; /* Ensure each section gets equal space */
+  min-width: 0; /* Prevents overflow issues */
 }
 
+/* Left Section (Logo & Title) */
 .navbar__left {
-  justify-content: flex-start;  /* Align logo to the left */
-}
-
-.navbar__right {
-  justify-content: flex-end;  /* Align text to the center */
-  padding-right: 20px;
-  margin-right: 20px; /* Space from the right edge */
+  flex: 1;
+  justify-content: flex-start;
 }
 
 .navbar__logo {
-  height: 50px; /* Adjust logo size */
+  height: 50px; /* Adjust based on logo */
   width: auto;
-  margin-right: 10px; /* Space between logo and date */
+  margin-right: 10px;
 }
 
-.navbar__center {
-  font-size: 1.2rem;
+.navbar__title {
+  font-size: 1.5rem;
   font-weight: bold;
-  text-align: center;
+  text-transform: uppercase;
 }
 
-/* Make Navbar Responsive */
+/* Center Section (Current Date) */
+.navbar__center {
+  flex: 1;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #f4f4f4; /* Light contrast */
+}
+
+/* Right Section (Text) */
+.navbar__right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #f4f4f4;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  max-width: 30%;
+  min-width: 150px;
+  margin: 35px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column; /* Stack sections on smaller screens */
-    text-align: center;
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
   }
 
   .navbar__section {
-    padding: 5px 0;
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+
+  .navbar__left, .navbar__right {
+    justify-content: center;
   }
 }

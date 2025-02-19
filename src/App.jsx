@@ -8,7 +8,7 @@ function App() {
   return (
     <div>
       <Navbar />  {/* ✅ Use Navbar in your app */}
-      <main>
+      <main className="main-container">
         <Standings />
         <Matchups />
       </main>

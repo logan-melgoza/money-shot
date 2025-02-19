@@ -81,6 +81,7 @@ function Matchups() {
 
   return (
     <div className="matchups-container">
+    <h2>nba matchups</h2>
     {matchups.length > 0 ? (
       <div className="matchups-grid">
         {matchups.map((game) => (

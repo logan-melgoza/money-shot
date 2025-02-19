@@ -1,20 +1,20 @@
 .matchups-container {
   max-width: 900px;
-  margin: auto;
+  margin: 0;
   padding: 20px;
-  background-color: #121212; /* Dark theme */
+  background-color: #1e1e1e; /* Dark theme */
   color: white;
   border-radius: 10px;
 }
 
 .matchups-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2-column layout */
+  grid-template-columns: repeat(3, 1fr); /* 2-column layout */
   gap: 20px;
 }
 
 .matchup-card {
-  background: #1e1e1e;
+  background: #252525;
   padding: 15px;
   border-radius: 10px;
   text-align: center;
