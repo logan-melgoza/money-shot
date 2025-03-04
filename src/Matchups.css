@@ -53,3 +53,94 @@
   font-size: 0.9rem;
   color: #cccccc;
 }
+
+/* Modal Overlay - Blurs Background */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); 
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #1e1e1e;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 600px; 
+  max-width: 90%;
+  min-height: 250px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  overflow: hidden; 
+}
+
+/* Modal Teams Container */
+.modal-teams {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  width: 100%; 
+  max-width: 90%; 
+  padding: 20px 20px; 
+  box-sizing: border-box; 
+  flex-wrap: wrap;
+}
+
+/* Individual Team Box */
+.team-box {
+  flex: 1; /* Ensures both teams take equal width */
+  max-width: 50%; /* Prevents overflow */
+  display: flex;
+  flex-direction: column; /* Stack items */
+  align-items: center;
+  text-align: center;
+  overflow: hidden; /* Ensures content does not spill over */
+  word-wrap: break-word; /* Breaks long text */
+}
+
+/* Force Left & Right Alignment */
+.team-box:first-child {
+  align-items: flex-start; /* Left-align away team */
+  text-align: left;
+}
+
+.team-box:last-child {
+  align-items: flex-end; /* Right-align home team */
+  text-align: right;
+}
+
+/* Ensuring Proper Text Wrapping */
+.team-name, .team-record {
+  white-space: nowrap; /* Prevents text wrapping */
+  overflow: hidden; /* Prevents overflow */
+  text-overflow: ellipsis; /* Adds "..." if text is too long */
+}
+
+/* Close Button */
+.close-button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  border: none;
+  background: #ff4747;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.close-button:hover {
+  background: #ff2c2c;
+}
