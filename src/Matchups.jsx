@@ -126,7 +126,7 @@ function Matchups() {
           {matchups.length > 0 ? (
             <div className="matchups-grid">
               {matchups.map((game) => (
-                <div key={game.id} className="matchup-card">
+                <div key={game.id} className="matchup-card" onClick={() => handleMatchupClick(game)}>
                   {/* Away Team */}
                   <div className="team">
                     <img
