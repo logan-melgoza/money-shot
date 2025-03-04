@@ -4,6 +4,9 @@ import "./Matchups.css";
 function Matchups() {
   const [matchups, setMatchups] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect (() => {
     const cachedData = localStorage.getItem('matchupData');
@@ -21,12 +24,17 @@ function Matchups() {
     }
   }, []);
 
+  const handleMatchupClick = (game) => {
+    setSelectedGame(game);
+    setIsModalOpen(true);
+  };
+
   const fetchMatchups = async () => {
-    // const yesterday = new Date();
-    // yesterday.setDate(yesterday.getDate() - 1);
-    // const formattedDate = yesterday.toISOString().split("T")[0];
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedDate = yesterday.toISOString().split("T")[0];
   
-    const gamesUrl = `https://api-nba-v1.p.rapidapi.com/games?date=2025-02-13`;
+    const gamesUrl = `https://api-nba-v1.p.rapidapi.com/games?date=${formattedDate}`;
     const standingsUrl = `https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2024`;
   
     const options = {
@@ -80,53 +88,79 @@ function Matchups() {
   };
 
   return (
-    <div className="matchups-container">
-    <h2>nba matchups</h2>
-    {matchups.length > 0 ? (
-      <div className="matchups-grid">
-        {matchups.map((game) => (
-          <div key={game.id} className="matchup-card">
-            {/* Away Team */}
-            <div className="team">
-              <img
-                src={game.teams.visitors?.logo ?? "/placeholder.png"}
-                alt={game.teams.visitors?.nickname ?? "Unknown Team"}
-                className="team-logo"
-              />
-              <div className="team-info">
-                <span className="team-name">{game.teams.visitors?.nickname ?? "Unknown Team"}</span>
-                <span className="team-record">
-                  ({game.visitorRecord.wins}-{game.visitorRecord.losses})
-                </span>
+    <>
+      {isModalOpen && selectedGame && (
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content">
+            <div className="modal-teams">
+              {/* Away Team */}
+              <div className="team-box">
+                <img src={selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo"/>
+                <h2>{selectedGame.teams.visitors.nickname}</h2>
+                <p>({selectedGame.visitorRecord.wins}-{selectedGame.visitorRecord.losses})</p>
+              </div>
+
+              {/* Home Team */}
+              <div className="team-box">
+                <img src={selectedGame.teams.home.logo} alt={selectedGame.teams.home.nickname} className="team-logo"/>
+                <h2>{selectedGame.teams.home.nickname}</h2>
+                <p>({selectedGame.homeRecord.wins}-{selectedGame.homeRecord.losses})</p>
               </div>
             </div>
 
-            {/* Home Team */}
-            <div className="team">
-              <img
-                src={game.teams.home?.logo ?? "/placeholder.png"}
-                alt={game.teams.home?.nickname ?? "Unknown Team"}
-                className="team-logo"
-              />
-              <div className="team-info">
-                <span className="team-name">{game.teams.home?.nickname ?? "Unknown Team"}</span>
-                <span className="team-record">
-                  ({game.homeRecord.wins}-{game.homeRecord.losses})
-                </span>
-              </div>
-            </div>
-
-            {/* Location */}
-            <div className="game-location">
-              {game.arena?.name ?? "Unknown Arena"}, {game.arena?.city ?? "Unknown City"}
-            </div>
+            <button className="close-button" onClick={() => setIsModalOpen(false)}>Close</button>
           </div>
-        ))}
-      </div>
-    ) : (
-      <p className="no-games">No games available</p>
-    )}
-  </div>
+        </div>
+      )}
+
+      <div className="matchups-container">
+      <h2>nba matchups</h2>
+      {matchups.length > 0 ? (
+        <div className="matchups-grid">
+          {matchups.map((game) => (
+            <div key={game.id} className="matchup-card" onClick={() => handleMatchupClick(game)}>
+              {/* Away Team */}
+              <div className="team">
+                <img
+                  src={game.teams.visitors?.logo ?? "/placeholder.png"}
+                  alt={game.teams.visitors?.nickname ?? "Unknown Team"}
+                  className="team-logo"
+                />
+                <div className="team-info">
+                  <span className="team-name">{game.teams.visitors?.nickname ?? "Unknown Team"}</span>
+                  <span className="team-record">
+                    ({game.visitorRecord.wins}-{game.visitorRecord.losses})
+                  </span>
+                </div>
+              </div>
+
+              {/* Home Team */}
+              <div className="team">
+                <img
+                  src={game.teams.home?.logo ?? "/placeholder.png"}
+                  alt={game.teams.home?.nickname ?? "Unknown Team"}
+                  className="team-logo"
+                />
+                <div className="team-info">
+                  <span className="team-name">{game.teams.home?.nickname ?? "Unknown Team"}</span>
+                  <span className="team-record">
+                    ({game.homeRecord.wins}-{game.homeRecord.losses})
+                  </span>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="game-location">
+                {game.arena?.name ?? "Unknown Arena"}, {game.arena?.city ?? "Unknown City"}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="no-games">No games available</p>
+      )}
+    </div>
+  </>
   );
 }
 export default Matchups;
