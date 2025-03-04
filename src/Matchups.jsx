@@ -7,6 +7,14 @@ function Matchups() {
   const [selectedGame, setSelectedGame] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const brokenLogos = {
+    "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png" : "https://logodownload.org/wp-content/uploads/2021/07/oklahoma-city-thunder-logo-0.png",
+    "https://upload.wikimedia.org/wikipedia/fr/3/34/Bucks2015.png" : "https://upload.wikimedia.org/wikipedia/sco/4/4a/Milwaukee_Bucks_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/Miami_Heat_-_Logo.svg/1200px-Miami_Heat_-_Logo.svg.png" : "https://upload.wikimedia.org/wikipedia/en/f/fb/Miami_Heat_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/fr/b/bd/Orlando_Magic_logo_2010.png" : "https://upload.wikimedia.org/wikipedia/en/thumb/1/10/Orlando_Magic_logo.svg/2560px-Orlando_Magic_logo.svg.png",
+    "https://upload.wikimedia.org/wikipedia/fr/4/48/76ers_2016.png" : "https://upload.wikimedia.org/wikipedia/commons/e/eb/Philadelphia-76ers-Logo-1977-1996.png"
+   };
+
 
   useEffect (() => {
     const cachedData = localStorage.getItem('matchupData');
@@ -114,52 +122,52 @@ function Matchups() {
       )}
 
       <div className="matchups-container">
-      <h2>nba matchups</h2>
-      {matchups.length > 0 ? (
-        <div className="matchups-grid">
-          {matchups.map((game) => (
-            <div key={game.id} className="matchup-card" onClick={() => handleMatchupClick(game)}>
-              {/* Away Team */}
-              <div className="team">
-                <img
-                  src={game.teams.visitors?.logo ?? "/placeholder.png"}
-                  alt={game.teams.visitors?.nickname ?? "Unknown Team"}
-                  className="team-logo"
-                />
-                <div className="team-info">
-                  <span className="team-name">{game.teams.visitors?.nickname ?? "Unknown Team"}</span>
-                  <span className="team-record">
-                    ({game.visitorRecord.wins}-{game.visitorRecord.losses})
-                  </span>
-                </div>
-              </div>
+          <h2>nba matchups</h2>
+          {matchups.length > 0 ? (
+            <div className="matchups-grid">
+              {matchups.map((game) => (
+                <div key={game.id} className="matchup-card">
+                  {/* Away Team */}
+                  <div className="team">
+                    <img
+                      src={brokenLogos[game.teams.visitors?.logo] || game.teams.visitors?.logo || "/placeholder.png"}
+                      alt={game.teams.visitors?.nickname ?? "Unknown Team"}
+                      className="team-logo"
+                    />
+                    <div className="team-info">
+                      <span className="team-name">{game.teams.visitors?.nickname ?? "Unknown Team"}</span>
+                      <span className="team-record">
+                        ({game.visitorRecord.wins}-{game.visitorRecord.losses})
+                      </span>
+                    </div>
+                  </div>
 
-              {/* Home Team */}
-              <div className="team">
-                <img
-                  src={game.teams.home?.logo ?? "/placeholder.png"}
-                  alt={game.teams.home?.nickname ?? "Unknown Team"}
-                  className="team-logo"
-                />
-                <div className="team-info">
-                  <span className="team-name">{game.teams.home?.nickname ?? "Unknown Team"}</span>
-                  <span className="team-record">
-                    ({game.homeRecord.wins}-{game.homeRecord.losses})
-                  </span>
-                </div>
-              </div>
+                  {/* Home Team */}
+                  <div className="team">
+                    <img
+                      src={brokenLogos[game.teams.home?.logo] || game.teams.home?.logo || "/placeholder.png"}
+                      alt={game.teams.home?.nickname ?? "Unknown Team"}
+                      className="team-logo"
+                    />
+                    <div className="team-info">
+                      <span className="team-name">{game.teams.home?.nickname ?? "Unknown Team"}</span>
+                      <span className="team-record">
+                        ({game.homeRecord.wins}-{game.homeRecord.losses})
+                      </span>
+                    </div>
+                  </div>
 
-              {/* Location */}
-              <div className="game-location">
-                {game.arena?.name ?? "Unknown Arena"}, {game.arena?.city ?? "Unknown City"}
-              </div>
+                  {/* Location */}
+                  <div className="game-location">
+                    {game.arena?.name ?? "Unknown Arena"}, {game.arena?.city ?? "Unknown City"}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="no-games">No games available</p>
-      )}
-    </div>
+          ) : (
+            <p className="no-games">No games available</p>
+          )}
+      </div>
   </>
   );
 }
