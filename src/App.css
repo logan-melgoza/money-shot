@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -18,21 +18,6 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
 .card {
   padding: 2em;
 }
@@ -42,16 +27,16 @@
 }
 
 .main-container {
-  display: flex;          /* ✅ Arrange children (Standings & Matchups) side by side */
-  justify-content: space-between;  /* ✅ Add space between them */
-  align-items: flex-start; /* ✅ Align items to the top */
-  gap: 20px; /* ✅ Add some spacing between elements */
+  display: flex;         
+  justify-content: space-between; 
+  align-items: flex-start;
+  gap: 20px;
   padding: 20px;
   margin-top: 70px;
 }
 
 @media (max-width: 768px) {
   .main-container {
-    flex-direction: column;  /* ✅ Stack vertically on small screens */
+    flex-direction: column; 
   }
 }

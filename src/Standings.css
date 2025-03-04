@@ -23,6 +23,8 @@ h2, h3 {
   display: flex;
   justify-content: space-between; /* Places East & West side by side */
   gap: 20px;
+  max-width: 900px; /* Increase width */
+  margin: 0 auto; /* Center container */
 }
 
 /* Conference Styling */

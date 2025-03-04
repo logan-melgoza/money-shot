@@ -1,4 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 import "./Matchups.css";
 
 function Matchups() {
@@ -6,6 +19,7 @@ function Matchups() {
   const [error, setError] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStat, setSelectedStat] = useState("points");
 
   const brokenLogos = {
     "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png" : "https://logodownload.org/wp-content/uploads/2021/07/oklahoma-city-thunder-logo-0.png",
@@ -32,8 +46,74 @@ function Matchups() {
     }
   }, []);
 
-  const handleMatchupClick = (game) => {
-    setSelectedGame(game);
+  const handleMatchupClick = async (game) => {
+    const fetchTeamStats = async (teamId) => {
+      const cachedStats = localStorage.getItem(`teamStats-${teamId}`);
+      const cachedTimestamp = localStorage.getItem(`teamStatsTimestamp-${teamId}`);
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000;
+  
+      if (cachedStats && cachedTimestamp && (now - Number(cachedTimestamp)) < oneDay) {
+        console.log(`Using cached stats for team ${teamId}`);
+        return JSON.parse(cachedStats);
+      }
+  
+      const statsUrl = `https://api-nba-v1.p.rapidapi.com/teams/statistics?id=${teamId}&season=2024`;
+      const options = {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": "8db8bcee80mshe14a4768570a065p17461ejsna40d19c36a19",
+          "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+        },
+      };
+  
+      try {
+        const response = await fetch(statsUrl, options);
+        if (!response.ok) {
+          throw new Error(`Stats request failed with status ${response.status}`);
+        }
+        const statsData = await response.json();
+        const stats = statsData.response;
+  
+        if (!stats || !stats.games) {
+          throw new Error("Invalid stats response");
+        }
+  
+        const gamesPlayed = stats.games;
+        const perGameStats = {
+          points: (stats.points / gamesPlayed).toFixed(1),
+          rebounds: (stats.totReb / gamesPlayed).toFixed(1),
+          assists: (stats.assists / gamesPlayed).toFixed(1),
+          steals: (stats.steals / gamesPlayed).toFixed(1),
+          blocks: (stats.blocks / gamesPlayed).toFixed(1),
+          turnovers: (stats.turnovers / gamesPlayed).toFixed(1),
+          fgPercentage: stats.fgp,
+          ftPercentage: stats.ftp,
+          threePtPercentage: stats.tpp,
+        };
+  
+        localStorage.setItem(`teamStats-${teamId}`, JSON.stringify(perGameStats));
+        localStorage.setItem(`teamStatsTimestamp-${teamId}`, now.toString());
+  
+        return perGameStats;
+      } catch (error) {
+        console.error(`Error fetching stats for team ${teamId}:`, error);
+        return null;
+      }
+    };
+  
+    // Fetch stats for both teams
+    const [visitorStats, homeStats] = await Promise.all([
+      fetchTeamStats(game.teams.visitors.id),
+      fetchTeamStats(game.teams.home.id),
+    ]);
+  
+    setSelectedGame({
+      ...game,
+      visitorStats,
+      homeStats,
+    });
+  
     setIsModalOpen(true);
   };
 
@@ -103,18 +183,42 @@ function Matchups() {
             <div className="modal-teams">
               {/* Away Team */}
               <div className="team-box">
-                <img src={selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo"/>
+                <img src={brokenLogos[selectedGame.teams.visitors?.logo] || selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo"/>
                 <h2>{selectedGame.teams.visitors.nickname}</h2>
                 <p>({selectedGame.visitorRecord.wins}-{selectedGame.visitorRecord.losses})</p>
               </div>
 
               {/* Home Team */}
               <div className="team-box">
-                <img src={selectedGame.teams.home.logo} alt={selectedGame.teams.home.nickname} className="team-logo"/>
+                <img src={brokenLogos[selectedGame.teams.home?.logo] || selectedGame.teams.home.logo} alt={selectedGame.teams.home.nickname} className="team-logo"/>
                 <h2>{selectedGame.teams.home.nickname}</h2>
                 <p>({selectedGame.homeRecord.wins}-{selectedGame.homeRecord.losses})</p>
               </div>
             </div>
+
+            {/* Insert Bar */}
+            {selectedGame.visitorStats && selectedGame.homeStats && (
+              <Bar
+                data={{
+                  labels: [selectedGame.teams.visitors.nickname, selectedGame.teams.home.nickname],
+                  datasets: [
+                    {
+                      label: selectedStat.toUpperCase(),
+                      data: [
+                        selectedGame.visitorStats[selectedStat] ?? 0,
+                        selectedGame.homeStats[selectedStat] ?? 0,
+                      ],
+                      backgroundColor: ["#36A2EB", "#FF6384"],
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  plugins: { legend: { display: false } },
+                  scales: { y: { beginAtZero: true } },
+                }}
+              />
+            )}
 
             <button className="close-button" onClick={() => setIsModalOpen(false)}>Close</button>
           </div>
@@ -148,7 +252,7 @@ function Matchups() {
                       src={brokenLogos[game.teams.home?.logo] || game.teams.home?.logo || "/placeholder.png"}
                       alt={game.teams.home?.nickname ?? "Unknown Team"}
                       className="team-logo"
-                    />
+                          />
                     <div className="team-info">
                       <span className="team-name">{game.teams.home?.nickname ?? "Unknown Team"}</span>
                       <span className="team-record">
