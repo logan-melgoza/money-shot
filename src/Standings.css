@@ -1,6 +1,6 @@
 /* Standings Container */
 .Standings {
-  background-color: #1e1e1e; /* Dark theme to match Matchups */
+  background-color: #071c3d; /* Dark theme to match Matchups */
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -30,7 +30,7 @@ h2, h3 {
 /* Conference Styling */
 .conference {
   flex: 1; /* Ensures equal spacing */
-  background-color: #252525; /* Slightly lighter for contrast */
+  background-color: #09244F; /* Slightly lighter for contrast */
   padding: 15px;
   border-radius: 8px;
 }
