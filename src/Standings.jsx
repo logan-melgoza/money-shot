@@ -28,7 +28,7 @@ function Standings () {
     const cachedTimestamp = localStorage.getItem('standingsTimestamp');
     const now = Date.now();
 
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in ms
+    const oneDay = 20 * 60 * 1000; // 20 mins in ms
 
     if (cachedData && cachedTimestamp && (now - Number(cachedTimestamp)) < oneDay) {
       // Use cached data

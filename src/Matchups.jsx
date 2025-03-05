@@ -39,7 +39,7 @@ function Matchups() {
     const cachedData = localStorage.getItem("matchupData");
     const cachedTimestamp = localStorage.getItem("matchupsTimestamp");
     const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
+    const oneDay =  20 * 60 * 1000;
   
     if (cachedData && cachedTimestamp && now - Number(cachedTimestamp) < oneDay) {
       setMatchups(JSON.parse(cachedData));
@@ -56,9 +56,9 @@ function Matchups() {
   }, []);
 
   const fetchMatchups = async () => {
-    // const tomorrow = new Date();
-    // tomorrow.setDate(tomorrow.getDate() + 1);
-    const formattedDate = new Date().toISOString().split("T")[0];
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const formattedDate = tomorrow.toISOString().split("T")[0];
 
     const matchupsURL = `https://api-nba-v1.p.rapidapi.com/games?date=${formattedDate}`;
     const standingsURL = 'https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2024';
@@ -127,7 +127,7 @@ function Matchups() {
     const cachedStats = localStorage.getItem(`teamStats-${teamId}`);
     const cachedTimestamp = localStorage.getItem(`teamStatsTimestamp-${teamId}`);
     const now = Date.now();
-    const oneDay = 24 * 60 * 60 * 1000;
+    const oneDay = 20 * 60 * 1000;
 
     if (cachedStats && cachedTimestamp && now - Number(cachedTimestamp) < oneDay) {
       const parsedStats = JSON.parse(cachedStats);
@@ -237,7 +237,7 @@ function Matchups() {
     <>
       {isModalOpen && selectedGame && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modal-content">
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-teams">
               <div className="team-box">
                 <img src={brokenLogos[selectedGame.teams.visitors?.logo] || selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo" />
