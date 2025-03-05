@@ -2,7 +2,7 @@
   max-width: 900px;
   margin: 0;
   padding: 20px;
-  background-color: #1e1e1e; /* Dark theme */
+  background-color: #071c3d; /* Dark theme */
   color: white;
   border-radius: 10px;
 }
@@ -29,7 +29,7 @@
 }
 
 .matchup-card {
-  background: #252525;
+  background: #09244F;
   padding: 15px;
   border-radius: 10px;
   text-align: center;

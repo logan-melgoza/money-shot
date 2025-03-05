@@ -22,9 +22,13 @@ function Matchups() {
   const [selectedStat, setSelectedStat] = useState("points");
 
   const brokenLogos = {
-    "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png": "https://logodownload.org/wp-content/uploads/2021/07/oklahoma-city-thunder-logo-0.png",
-    "https://upload.wikimedia.org/wikipedia/fr/3/34/Bucks2015.png": "https://upload.wikimedia.org/wikipedia/sco/4/4a/Milwaukee_Bucks_logo.svg",
-  };
+    "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png" : "https://logodownload.org/wp-content/uploads/2021/07/oklahoma-city-thunder-logo.png",
+    "https://upload.wikimedia.org/wikipedia/fr/3/34/Bucks2015.png" : "https://upload.wikimedia.org/wikipedia/sco/4/4a/Milwaukee_Bucks_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/fr/thumb/1/1c/Miami_Heat_-_Logo.svg/1200px-Miami_Heat_-_Logo.svg.png" : "https://upload.wikimedia.org/wikipedia/en/f/fb/Miami_Heat_logo.svg",
+    "https://upload.wikimedia.org/wikipedia/fr/b/bd/Orlando_Magic_logo_2010.png" : "https://upload.wikimedia.org/wikipedia/en/thumb/1/10/Orlando_Magic_logo.svg/2560px-Orlando_Magic_logo.svg.png",
+    "https://upload.wikimedia.org/wikipedia/fr/4/48/76ers_2016.png" : "https://upload.wikimedia.org/wikipedia/commons/e/eb/Philadelphia-76ers-Logo-1977-1996.png",
+    "https://upload.wikimedia.org/wikipedia/fr/0/0e/San_Antonio_Spurs_2018.png" : "https://loodibee.com/wp-content/uploads/san-antonio-spurs-logo-symbol.png"
+   };
 
   useEffect(() => {
     const cachedData = localStorage.getItem("matchupData");
