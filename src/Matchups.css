@@ -96,7 +96,7 @@
 
 /* Modal Content */
 .modal-content {
-  background: #1e1e1e;
+  background: #18233d;
   color: white;
   padding: 20px;
   border-radius: 10px;
@@ -120,6 +120,7 @@
   width: 100%; 
   max-width: 90%; 
   padding: 20px 20px; 
+  padding-bottom: 5px;
   box-sizing: border-box; 
   flex-wrap: wrap;
 }
@@ -152,6 +153,11 @@
   white-space: nowrap; /* Prevents text wrapping */
   overflow: hidden; /* Prevents overflow */
   text-overflow: ellipsis; /* Adds "..." if text is too long */
+}
+
+.stat-tab{
+  background-color: #38455b;
+  border-color: black;
 }
 
 /* Close Button */
