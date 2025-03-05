@@ -252,6 +252,10 @@ function Matchups() {
               </div>
             </div>
 
+            <div className="season-averages">
+              <h3>Season Averages</h3>
+            </div>
+
             {/* Stat Selection Tabs */}
             <div className="stat-tabs">
               {["points", "rebounds", "assists", "steals", "blocks"].map((stat) => (
@@ -308,13 +312,33 @@ function Matchups() {
                             selectedGame.homeStats[selectedStat] ?? 0,
                           ],
                           backgroundColor: ["#36A2EB", "#FF6384"],
+                          borderRadius: 10, // Makes top edges rounded
+                          barPercentage: 0.7, // Adjusts bar width (0 to 1)
+                          categoryPercentage: 0.7,
                         },
                       ],
                     }}
                     options={{
                       responsive: true,
                       plugins: { legend: { display: false } },
-                      scales: { y: { beginAtZero: true } },
+                      scales: { x: {
+                        ticks: { color: "white" }, // White x-axis labels
+                        grid: { color: "rgba(255, 255, 255, 0.2)" }, // Faint grid lines
+                      },
+                        y: { beginAtZero: false,
+                          min: Math.max(0, Math.floor(Math.max(
+                            selectedGame.visitorStats[selectedStat] ?? 0, 
+                            selectedGame.homeStats[selectedStat] ?? 0
+                          ) * 0.5)), // Start at ~50% of the highest value
+                          
+                          suggestedMax: Math.max(
+                            selectedGame.visitorStats[selectedStat] ?? 0, 
+                            selectedGame.homeStats[selectedStat] ?? 0
+                          ) * 1.2,
+                          ticks: { color: "white" }, // White y-axis labels
+                          grid: { color: "rgba(255, 255, 255, 0.2)" }, // Faint grid lines 
+                        }
+                       },
                     }}
                   />
                 </>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&display=swap');
+
 /* Navbar Container */
 .navbar {
   background-color: #09244f;
@@ -39,6 +41,9 @@
   font-size: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Bebas Neue', sans-serif; /* Sporty font */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Center Section (Current Date) */
@@ -48,6 +53,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: #f4f4f4; /* Light contrast */
+  font-family: 'Oswald', sans-serif;
 }
 
 /* Right Section (Text) */
@@ -64,6 +70,8 @@
   max-width: 30%;
   min-width: 150px;
   margin: 35px;
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
 }
 
 /* Responsive Design */
