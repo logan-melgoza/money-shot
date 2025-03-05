@@ -30,35 +30,75 @@ function Matchups() {
     "https://upload.wikimedia.org/wikipedia/fr/0/0e/San_Antonio_Spurs_2018.png" : "https://loodibee.com/wp-content/uploads/san-antonio-spurs-logo-symbol.png"
    };
 
-
-  useEffect (() => {
-    const cachedData = localStorage.getItem('matchupData');
-    const cachedTimestamp = localStorage.getItem('matchupsTimestamp');
+  useEffect(() => {
+    const cachedData = localStorage.getItem("matchupData");
+    const cachedTimestamp = localStorage.getItem("matchupsTimestamp");
     const now = Date.now();
-
     const oneDay = 24 * 60 * 60 * 1000;
-
-    if(cachedData && cachedTimestamp && (now - Number(cachedTimestamp)) < oneDay){
-      const parsed = JSON.parse(cachedData);
-      setMatchups(parsed);
-      console.log("Using cached standings data");
-    } else{
-      fetchMatchups();
+  
+    if (cachedData && cachedTimestamp && now - Number(cachedTimestamp) < oneDay) {
+      setMatchups(JSON.parse(cachedData));
+      console.log("Using cached matchups data");
+    } else {
+      fetchMatchups().then((data) => {
+        if (data) {
+          localStorage.setItem("matchupData", JSON.stringify(data));
+          localStorage.setItem("matchupsTimestamp", now.toString());
+          setMatchups(data);
+        }
+      });
     }
   }, []);
 
+  const fetchMatchups = async () => {
+    try {
+      const response = await fetch("https://api-nba-v1.p.rapidapi.com/games", {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": "8db8bcee80mshe14a4768570a065p17461ejsna40d19c36a19",
+          "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch matchups: ${response.status}`);
+      }
+  
+      const data = await response.json();
+  
+      if (!data || !data.response) {
+        throw new Error("Invalid API response");
+      }
+  
+      // Filter only necessary matchup data
+      const formattedMatchups = data.response.map((game) => ({
+        id: game.id,
+        teams: game.teams,
+        visitorRecord: game.scores.visitors,
+        homeRecord: game.scores.home,
+      }));
+  
+      return formattedMatchups;
+    } catch (error) {
+      console.error("Error fetching matchups:", error);
+      return [];
+    }
+  };
+
   const handleMatchupClick = async (game) => {
+    setSelectedStat("points"); // ✅ Reset stat selection when opening new modal
+
     const fetchTeamStats = async (teamId) => {
       const cachedStats = localStorage.getItem(`teamStats-${teamId}`);
       const cachedTimestamp = localStorage.getItem(`teamStatsTimestamp-${teamId}`);
       const now = Date.now();
       const oneDay = 24 * 60 * 60 * 1000;
-  
-      if (cachedStats && cachedTimestamp && (now - Number(cachedTimestamp)) < oneDay) {
+
+      if (cachedStats && cachedTimestamp && now - Number(cachedTimestamp) < oneDay) {
         console.log(`Using cached stats for team ${teamId}`);
         return JSON.parse(cachedStats);
       }
-  
+
       const statsUrl = `https://api-nba-v1.p.rapidapi.com/teams/statistics?id=${teamId}&season=2024`;
       const options = {
         method: "GET",
@@ -67,20 +107,21 @@ function Matchups() {
           "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
         },
       };
-  
+
       try {
         const response = await fetch(statsUrl, options);
         if (!response.ok) {
           throw new Error(`Stats request failed with status ${response.status}`);
         }
         const statsData = await response.json();
-        const stats = statsData.response;
-  
-        if (!stats || !stats.games) {
-          throw new Error("Invalid stats response");
+        
+        if (!statsData || !statsData.response || Object.keys(statsData.response).length === 0) {
+          console.warn(`No stats found for team ${teamId}`);
+          return null; // ✅ Return null instead of breaking the app
         }
-  
-        const gamesPlayed = stats.games;
+
+        const stats = statsData.response;
+        const gamesPlayed = stats.games ?? 1;
         const perGameStats = {
           points: (stats.points / gamesPlayed).toFixed(1),
           rebounds: (stats.totReb / gamesPlayed).toFixed(1),
@@ -92,88 +133,34 @@ function Matchups() {
           ftPercentage: stats.ftp,
           threePtPercentage: stats.tpp,
         };
-  
+
         localStorage.setItem(`teamStats-${teamId}`, JSON.stringify(perGameStats));
         localStorage.setItem(`teamStatsTimestamp-${teamId}`, now.toString());
-  
+
         return perGameStats;
       } catch (error) {
         console.error(`Error fetching stats for team ${teamId}:`, error);
         return null;
       }
     };
-  
-    // Fetch stats for both teams
+
     const [visitorStats, homeStats] = await Promise.all([
       fetchTeamStats(game.teams.visitors.id),
       fetchTeamStats(game.teams.home.id),
     ]);
-  
+
+    if (!visitorStats || !homeStats) {
+      console.error("Stats missing, not updating modal.");
+      return;
+    }
+
     setSelectedGame({
       ...game,
       visitorStats,
       homeStats,
     });
-  
-    setIsModalOpen(true);
-  };
 
-  const fetchMatchups = async () => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const formattedDate = yesterday.toISOString().split("T")[0];
-  
-    const gamesUrl = `https://api-nba-v1.p.rapidapi.com/games?date=${formattedDate}`;
-    const standingsUrl = `https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2024`;
-  
-    const options = {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "8db8bcee80mshe14a4768570a065p17461ejsna40d19c36a19",
-        "x-rapidapi-host": "api-nba-v1.p.rapidapi.com",
-      },
-    };
-  
-    try {
-      // Fetch game matchups
-      const gamesResponse = await fetch(gamesUrl, options);
-      if (!gamesResponse.ok) {
-        throw new Error(`Games request failed with status ${gamesResponse.status}`);
-      }
-      const gamesData = await gamesResponse.json();
-  
-      // Fetch team standings
-      const standingsResponse = await fetch(standingsUrl, options);
-      if (!standingsResponse.ok) {
-        throw new Error(`Standings request failed with status ${standingsResponse.status}`);
-      }
-      const standingsData = await standingsResponse.json();
-  
-      // Create a lookup table for team records
-      const teamRecords = {};
-      standingsData.response.forEach((team) => {
-        teamRecords[team.team.id] = {
-          wins: team.conference.win,
-          losses: team.conference.loss,
-        };
-      });
-  
-      // Merge standings data into game matchups
-      const enrichedMatchups = gamesData.response.map((game) => ({
-        ...game,
-        visitorRecord: teamRecords[game.teams.visitors.id] || { wins: "N/A", losses: "N/A" },
-        homeRecord: teamRecords[game.teams.home.id] || { wins: "N/A", losses: "N/A" },
-      }));
-  
-      setMatchups(enrichedMatchups);
-      localStorage.setItem("matchupData", JSON.stringify(enrichedMatchups));
-      localStorage.setItem("matchupsTimestamp", Date.now().toString());
-  
-      console.log("Fetched new matchups and standings for:", formattedDate);
-    } catch (error) {
-      console.error("Error fetching matchups or standings:", error);
-      setError(error.message);
-    }
+    setIsModalOpen(true);
   };
 
   return (
@@ -182,26 +169,41 @@ function Matchups() {
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal-content">
             <div className="modal-teams">
-              {/* Away Team */}
               <div className="team-box">
-                <img src={brokenLogos[selectedGame.teams.visitors?.logo] || selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo"/>
+                <img src={brokenLogos[selectedGame.teams.visitors?.logo] || selectedGame.teams.visitors.logo} alt={selectedGame.teams.visitors.nickname} className="team-logo" />
                 <h2>{selectedGame.teams.visitors.nickname}</h2>
                 <p>({selectedGame.visitorRecord.wins}-{selectedGame.visitorRecord.losses})</p>
               </div>
 
-              {/* Home Team */}
               <div className="team-box">
-                <img src={brokenLogos[selectedGame.teams.home?.logo] || selectedGame.teams.home.logo} alt={selectedGame.teams.home.nickname} className="team-logo"/>
+                <img src={brokenLogos[selectedGame.teams.home?.logo] || selectedGame.teams.home.logo} alt={selectedGame.teams.home.nickname} className="team-logo" />
                 <h2>{selectedGame.teams.home.nickname}</h2>
                 <p>({selectedGame.homeRecord.wins}-{selectedGame.homeRecord.losses})</p>
               </div>
             </div>
 
-            {/* Insert Bar */}
-            {selectedGame.visitorStats && selectedGame.homeStats && (
+            {/* Stat Selection Tabs */}
+            <div className="stat-tabs">
+              {["points", "rebounds", "assists", "steals", "blocks"].map((stat) => (
+                <button
+                  key={stat}
+                  className={`stat-tab ${selectedStat === stat ? "active" : ""}`}
+                  onClick={() => setSelectedStat(stat)}
+                >
+                  {stat.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            {/* Bar Chart */}
+            {selectedGame?.visitorStats && selectedGame?.homeStats && (
               <Bar
+                key={selectedGame.teams.visitors.id + selectedGame.teams.home.id + selectedStat}
                 data={{
-                  labels: [selectedGame.teams.visitors.nickname, selectedGame.teams.home.nickname],
+                  labels: [
+                    selectedGame.teams.visitors.nickname,
+                    selectedGame.teams.home.nickname
+                  ],
                   datasets: [
                     {
                       label: selectedStat.toUpperCase(),
@@ -273,7 +275,8 @@ function Matchups() {
             <p className="no-games">No games available</p>
           )}
       </div>
-  </>
+    </>
   );
 }
+
 export default Matchups;

@@ -9,8 +9,23 @@
 
 .matchups-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 2-column layout */
+  grid-template-columns: repeat(3, 1fr); /* ✅ Explicitly maintains three columns */
   gap: 20px;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) { /* ✅ Adjust for smaller screens */
+  .matchups-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+  }
+}
+
+@media (max-width: 600px) { /* ✅ Adjust for mobile screens */
+  .matchups-grid {
+    grid-template-columns: repeat(1, 1fr); /* Single column for small screens */
+  }
 }
 
 .matchup-card {
@@ -18,6 +33,14 @@
   padding: 15px;
   border-radius: 10px;
   text-align: center;
+  cursor: pointer; /* ✅ Ensures it looks clickable */
+  transition: transform 0.2s ease-in-out;
+  position: relative; /* ✅ Prevents overlap issues */
+  z-index: 2; /* ✅ Places it above other elements */
+}
+
+.matchup-card:hover {
+  transform: scale(1.05); /* ✅ Slight hover effect to confirm interactivity */
 }
 
 .team {
