@@ -41,6 +41,8 @@
 
 .matchup-card:hover {
   transform: scale(1.05); /* ✅ Slight hover effect to confirm interactivity */
+  background-color: #2b436a;
+  box-shadow: 0 0 11px rgba(2, 2, 2, 0.5);
 }
 
 .team {

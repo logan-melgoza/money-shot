@@ -56,7 +56,7 @@ h2, h3 {
 
 /* Team Logos */
 .standings__logo {
-  width: 30px;
+  width: auto;
   height: 30px;
   margin-right: 10px;
 }
