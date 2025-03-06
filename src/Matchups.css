@@ -9,22 +9,22 @@
 
 .matchups-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* ✅ Explicitly maintains three columns */
+  grid-template-columns: repeat(3, 1fr); 
   gap: 20px;
   justify-content: center;
   position: relative;
   z-index: 1;
 }
 
-@media (max-width: 900px) { /* ✅ Adjust for smaller screens */
+@media (max-width: 900px) { 
   .matchups-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two columns for medium screens */
+    grid-template-columns: repeat(2, 1fr); 
   }
 }
 
-@media (max-width: 600px) { /* ✅ Adjust for mobile screens */
+@media (max-width: 600px) { 
   .matchups-grid {
-    grid-template-columns: repeat(1, 1fr); /* Single column for small screens */
+    grid-template-columns: repeat(1, 1fr); 
   }
 }
 
@@ -33,14 +33,14 @@
   padding: 15px;
   border-radius: 10px;
   text-align: center;
-  cursor: pointer; /* ✅ Ensures it looks clickable */
+  cursor: pointer;
   transition: transform 0.2s ease-in-out;
-  position: relative; /* ✅ Prevents overlap issues */
-  z-index: 2; /* ✅ Places it above other elements */
+  position: relative;
+  z-index: 2; 
 }
 
 .matchup-card:hover {
-  transform: scale(1.05); /* ✅ Slight hover effect to confirm interactivity */
+  transform: scale(1.05); 
   background-color: #2b436a;
   box-shadow: 0 0 11px rgba(2, 2, 2, 0.5);
 }
@@ -127,32 +127,32 @@
 
 /* Individual Team Box */
 .team-box {
-  flex: 1; /* Ensures both teams take equal width */
-  max-width: 50%; /* Prevents overflow */
+  flex: 1; 
+  max-width: 50%; 
   display: flex;
-  flex-direction: column; /* Stack items */
+  flex-direction: column;
   align-items: center;
   text-align: center;
-  overflow: hidden; /* Ensures content does not spill over */
-  word-wrap: break-word; /* Breaks long text */
+  overflow: hidden; 
+  word-wrap: break-word; 
 }
 
 /* Force Left & Right Alignment */
 .team-box:first-child {
-  align-items: flex-start; /* Left-align away team */
+  align-items: flex-start; 
   text-align: left;
 }
 
 .team-box:last-child {
-  align-items: flex-end; /* Right-align home team */
+  align-items: flex-end; 
   text-align: right;
 }
 
 /* Ensuring Proper Text Wrapping */
 .team-name, .team-record {
-  white-space: nowrap; /* Prevents text wrapping */
-  overflow: hidden; /* Prevents overflow */
-  text-overflow: ellipsis; /* Adds "..." if text is too long */
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 
 .stat-tab{
