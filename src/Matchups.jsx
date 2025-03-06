@@ -56,9 +56,9 @@ function Matchups() {
   }, []);
 
   const fetchMatchups = async () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const formattedDate = tomorrow.toISOString().split("T")[0];
+    // const tomorrow = new Date();
+    // tomorrow.setDate(tomorrow.getDate() + 1);
+    const formattedDate = new Date().toISOString().split("T")[0];
 
     const matchupsURL = `https://api-nba-v1.p.rapidapi.com/games?date=${formattedDate}`;
     const standingsURL = 'https://api-nba-v1.p.rapidapi.com/standings?league=standard&season=2024';
