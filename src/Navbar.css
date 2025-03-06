@@ -21,8 +21,8 @@
 .navbar__section {
   display: flex;
   align-items: center;
-  flex: 1; /* Ensure each section gets equal space */
-  min-width: 0; /* Prevents overflow issues */
+  flex: 1; 
+  min-width: 0; 
 }
 
 /* Left Section (Logo & Title) */
@@ -42,7 +42,7 @@
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-family: 'Bebas Neue', sans-serif; /* Sporty font */
+  font-family: 'Bebas Neue', sans-serif; 
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -52,7 +52,7 @@
   justify-content: center;
   font-size: 1rem;
   font-weight: bold;
-  color: #f4f4f4; /* Light contrast */
+  color: #f4f4f4; 
   font-family: 'Oswald', sans-serif;
 }
 

@@ -5,6 +5,7 @@ function Standings () {
   const [easternStandings, setEasternStandings] = useState([]);
   const [westernStandings, setWesternStandings] = useState([]);
   const [error, setError] = useState(null);
+  const [expanded, setExpanded] = useState(false);
 
   const brokenLogos = {
     "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4f/Thunder_d%27Oklahoma_City_logo.svg/1200px-Thunder_d%27Oklahoma_City_logo.svg.png" : "https://logodownload.org/wp-content/uploads/2021/07/oklahoma-city-thunder-logo.png",
@@ -81,32 +82,60 @@ function Standings () {
   };
 
   return (
-    <div className='Standings'>
-      <h2>NBA Standings</h2>
-      {error && <p>Error: {error}</p>}
-      <div className='standings-container'>
-        <div className='conference eastern'>
-          <h3>Eastern Conference</h3>
-          <ul className='standings__list'>
-            {easternStandings.map((item) => (
-              <li key={item.team.id}>
-                {item.conference.rank}. <img className= "standings__logo" src={getValidLogo(item.team)} alt={item.team.nickname} onError={(e) => (e.target.src = "/fallback-image.png")}/> {item.team.nickname} - {item.conference.win}W {item.conference.loss}L
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className='conference western'>
-          <h3>Western Conference</h3>
-          <ul className='standings__list'>
-            {westernStandings.map((item) => (
-              <li key={item.team.id}>
-                {item.conference.rank}. <img className= "standings__logo" src={getValidLogo(item.team)} alt={item.team.nickname} onError={(e) => (e.target.src = "/fallback-image.png")}/> {item.team.nickname} - {item.conference.win}W {item.conference.loss}L
-              </li>
-            ))}
-          </ul>
-        </div>
+    <div className="Standings">
+    <h2>NBA Standings</h2>
+    {error && <p>Error: {error}</p>}
+    <div className="standings-container">
+      {/* Eastern Conference */}
+      <div className="conference eastern">
+        <h3>Eastern Conference</h3>
+        <ul className="standings__list">
+          {(expanded ? easternStandings : easternStandings.slice(0, 10)).map((item) => (
+            <li key={item.team.id} className="team-row">
+              <span className="rank">{item.conference.rank}.</span>
+              <img
+                className="standings__logo"
+                src={getValidLogo(item.team)}
+                alt={item.team.nickname}
+                onError={(e) => (e.target.src = "/fallback-image.png")}
+              />
+              <div className="team-info">
+                <span className="team-name">{item.team.nickname}</span>
+                <span className="team-record">{item.conference.win}W {item.conference.loss}L</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Western Conference */}
+      <div className="conference western">
+        <h3>Western Conference</h3>
+        <ul className="standings__list">
+          {(expanded ? westernStandings : westernStandings.slice(0, 10)).map((item) => (
+            <li key={item.team.id} className="team-row">
+              <span className="rank">{item.conference.rank}.</span>
+              <img
+                className="standings__logo"
+                src={getValidLogo(item.team)}
+                alt={item.team.nickname}
+                onError={(e) => (e.target.src = "/fallback-image.png")}
+              />
+              <div className="team-info">
+                <span className="team-name">{item.team.nickname}</span>
+                <span className="team-record">{item.conference.win}W {item.conference.loss}L</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+
+    {/* Toggle Button */}
+    <button className="expand-button" onClick={() => setExpanded(!expanded)}>
+      {expanded ? "Show Top 10 Teams" : "Show All 15 Teams"}
+    </button>
+  </div>
   );
 }
 

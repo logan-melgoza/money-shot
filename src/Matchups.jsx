@@ -135,7 +135,7 @@ function Matchups() {
         const updatedCache = { ...prev, [teamId]: parsedStats };
         localStorage.setItem("teamStatsCache", JSON.stringify(updatedCache)); // ✅ Save entire cache
         return updatedCache;
-      }); // ✅ Store in state
+      }); 
       return parsedStats;;
     }
 
@@ -159,7 +159,7 @@ function Matchups() {
       
       if (!statsData || !statsData.response || Object.keys(statsData.response).length === 0) {
         console.warn(`No stats found for team ${teamId}`);
-        return null; // ✅ Return null instead of breaking the app
+        return null; //  Return null instead of breaking the app
       }
 
       const stats = statsData.response?.[0];
@@ -210,7 +210,7 @@ function Matchups() {
       return;
     }
   
-    setSelectedStat("points"); // ✅ Reset stat selection when opening new modal
+    setSelectedStat("points");
   
     console.log("Calling fetchTeamStats for teams:", game.teams.visitors.id, game.teams.home.id);
   
@@ -280,7 +280,7 @@ function Matchups() {
             {/* Bar Chart */}
             {selectedGame?.visitorStats && selectedGame?.homeStats && (
                 <>
-                  {/* 🔍 Debugging: Log the final chart data */}
+                  {/* Log the final chart data */}
                   {console.log("Final Chart Data:", {
                     labels: [
                       selectedGame.teams.visitors.nickname,
@@ -312,8 +312,8 @@ function Matchups() {
                             selectedGame.homeStats[selectedStat] ?? 0,
                           ],
                           backgroundColor: ["#36A2EB", "#FF6384"],
-                          borderRadius: 10, // Makes top edges rounded
-                          barPercentage: 0.7, // Adjusts bar width (0 to 1)
+                          borderRadius: 10, 
+                          barPercentage: 0.7,
                           categoryPercentage: 0.7,
                         },
                       ],
@@ -322,21 +322,21 @@ function Matchups() {
                       responsive: true,
                       plugins: { legend: { display: false } },
                       scales: { x: {
-                        ticks: { color: "white" }, // White x-axis labels
-                        grid: { color: "rgba(255, 255, 255, 0.2)" }, // Faint grid lines
+                        ticks: { color: "white" }, 
+                        grid: { color: "rgba(255, 255, 255, 0.2)" }, 
                       },
                         y: { beginAtZero: false,
                           min: Math.max(0, Math.floor(Math.max(
                             selectedGame.visitorStats[selectedStat] ?? 0, 
                             selectedGame.homeStats[selectedStat] ?? 0
-                          ) * 0.5)), // Start at ~50% of the highest value
+                          ) * 0.5)), 
                           
                           suggestedMax: Math.max(
                             selectedGame.visitorStats[selectedStat] ?? 0, 
                             selectedGame.homeStats[selectedStat] ?? 0
                           ) * 1.2,
-                          ticks: { color: "white" }, // White y-axis labels
-                          grid: { color: "rgba(255, 255, 255, 0.2)" }, // Faint grid lines 
+                          ticks: { color: "white" }, 
+                          grid: { color: "rgba(255, 255, 255, 0.2)" }, 
                         }
                        },
                     }}
