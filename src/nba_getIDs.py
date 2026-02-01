@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 
-connection_string = "mongodb+srv://aryanvashishta78:AvuwVjAGAT2LCAyP@cluster1.xplu3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
+
 Mongo_database = "NBA_Statistics"
 Mongo_collection1 = "NBA_Players"
 Mongo_collection2 = "NBA_Games"
@@ -45,4 +45,5 @@ if __name__ == "__main__":
     listPlayerIDs = get_playerID()
     listGameIDs = get_gameID()
     print(listPlayerIDs)
+
     print(len(listGameIDs))
