@@ -8,8 +8,6 @@ import time
 
 
 
-url = "https://api-nba-v1.p.rapidapi.com/"
-connection_string = "mongodb+srv://aryanvashishta78:AvuwVjAGAT2LCAyP@cluster1.xplu3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
 Mongo_database = "NBA_Statistics"
 Mongo_collection = "NBA_GameStatsPerID"
 Mongo_collection2 = "NBA_Games"
@@ -81,3 +79,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
