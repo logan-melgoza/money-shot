@@ -13,10 +13,7 @@ connection_string = "mongodb+srv://aryanvashishta78:AvuwVjAGAT2LCAyP@cluster1.xp
 Mongo_database = "NBA_Statistics"
 Mongo_collection = "NBA_PlayerStatsPerID"
 Mongo_collection2 = "NBA_Players"
-headers = {
-	"x-rapidapi-key": "8ad391f451mshf0bfbf49e83471ap1657a5jsnd03326d684b5",
-	"x-rapidapi-host": "api-nba-v1.p.rapidapi.com"
-}
+
 
 client = MongoClient(connection_string, server_api=ServerApi('1'))
 try:
@@ -82,4 +79,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
